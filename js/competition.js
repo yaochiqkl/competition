@@ -158,8 +158,9 @@
 					$(nn[0]).focus();
 				} else{
 					//console.log("本题所有填空已完成");
-
-					setTimeout(nextQuestionInit,1000);
+					if(current_user_right_num + current_robot_right_num = current_right_need){
+						setTimeout(nextQuestionInit,1000);
+					}
 				}
 			} else {
 				setTimeout(function(){
@@ -292,13 +293,14 @@
 				dataType: "json",
 				success: function (data, textStatus){
 					word_json = data;
-					$(".top , #nextButton").show();
 					console.log("getJSON succussfully :" +textStatus);
 					//从ajax请求
 					setTimeout(function(){
 						$("#input-area").html("匹配成功");
+						$(".top , #nextButton").show();
+						initPage(0);
 						},1000);
-					setTimeout(initPage,2500);
+					//setTimeout(initPage,2500);
 					total_words_num = word_json.words.length; //单词长度
 				},
 				error: function (){
@@ -355,7 +357,7 @@
 		}
 		function checkWindowSize(){
 			var height = $(window).height();
-			if ( height < 300 ) {
+			if ( height < 500 ) {
 				$(".tip").addClass("small");
 			} else if ($(".tip").hasClass("small")) {
 				$(".tip").removeClass("small");
