@@ -324,7 +324,8 @@
 			$.ajax({
 				type: "GET",
 				contentType:"application/json;charset=utf-8",
-				url: "/demo/update_user_word_time",
+				//url: "/demo/update_user_word_time",
+				url: "/update_user_word_time_optimize",
 				data: {word: current_right_answer, time: current_user_time},
 				dataType: "json",
 				success: function (){
@@ -410,7 +411,7 @@
 			console.log("overtimeEffect");
 			var $overtime = $("<span id='overtime' class='label label-default'>超时</span>");
 			$(".header").after($overtime);
-			$overtime.animate({opacity:"1"},800).animate({opacity:"0"},800,function(){
+			$overtime.animate({opacity:"1",top:"-=2%"},800).animate({opacity:"0",top:"-=2%"},800,function(){
 				$overtime.remove();
 			});
 			//$overtime.fadeIn(3000);
