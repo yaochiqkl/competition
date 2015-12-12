@@ -155,9 +155,10 @@
 				var nn = $(this).nextAll("input:not(.correct , .defalut , .lock)");
 				//fix bug: nn is not a jquery object but a DOM object
 				if( nn.length !== 0){
-					$(nn[0]).focus().click();
+					$(nn[0]).focus();
 				} else{
-					console.log("本题所有填空已完成");
+					//console.log("本题所有填空已完成");
+
 					setTimeout(nextQuestionInit,1000);
 				}
 			} else {
@@ -184,7 +185,7 @@
 				return false; 
 			}
 		}
-		function checkInputWithoutJump($n){
+/*		function checkInputWithoutJump($n){
 			if ($n.val().toLowerCase() === current_right_answer.substr($n.index(),1) ){
 				$n.addClass("correct");
 				$n.attr("readonly","readonly");
@@ -193,7 +194,7 @@
 				$n.addClass("incorrect").click(changeInput);
 			}
 		}
-/*		function nextQuestion(){
+		function nextQuestion(){
 			// next question
 			if (current_right_num === current_right_need){
 				setTimeout(nextQuestionInit,1000);
@@ -228,12 +229,12 @@
 				if ( sec === current_word.AI[i]) {
 					var $n = $("#input-area input:eq("+i+")");
 					if (!$n.hasClass("defalut") && !$n.hasClass("correct")){
-						$n.addClass("lock");
+						$n.addClass("lock").unbind("keyup",jumpNext);
 						//$n.blur();
 						$n.attr("readonly","readonly");
 						$n.val(current_right_answer.substr(i,1));
 						if ($n.is(":focus")) {
-							$n.next().focus().click();
+							$n.next().focus();
 						}
 						current_robot_right_num ++;
 						current_right_num ++ ;
