@@ -1,5 +1,5 @@
 /**
- * [���ʶ�ս��ʽ��]
+ * [µ¥´Ê¶ÔÕ½ÑùÊ½±í]
  * @author Double
  * @code-date 2015.12.5
  */
@@ -168,7 +168,7 @@
 	display: inline-block;
 	width: 15%;
 	height: 15%;
-	background: url(to-next.png)  no-repeat center/70% 70%;
+	background: url(../img/to-next.png)  no-repeat center/70% 70%;
 }
 .content>.score-area{
 	color: #003;
@@ -196,6 +196,7 @@
 	margin-top: 0;
 }
 #overtime{
+	opacity: 0;
 	display: inline-block;
 	position:fixed;
 	margin:auto;
@@ -205,4 +206,18 @@
 	width:42px;
 	height:22px;
 	font-size: 14px;
+}
+.miss{
+	opacity: 0;
+	position: fixed;
+	margin:auto;
+	left:0;
+	right: 0;
+	top: 25%;
+	width:42px;
+	height:16px;
+	line-height: 14px;
+	font-style: 14px;
+	font-weight: bold;
+	vertical-align: middle;
 }
