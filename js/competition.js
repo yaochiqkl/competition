@@ -115,8 +115,10 @@
 			$inputRequire[0].focus();
 			$("#input-area input:not(.defalut)").bind("keyup",jumpNext);
 		}
+		//the logic of check input and jump next
 		function jumpNext(event){
-			if ($(this).val().length === 1){
+			/* Jump logic: jump to next input no mater right or wrong
+			   if ($(this).val().length === 1){
 				var nn = $(this).nextAll("input:not(.correct , .defalut , .lock)");
 				//fix bug: nn is not a jquery object but a DOM object
 				if( nn.length !== 0){
@@ -147,23 +149,40 @@
 				if ($(mm) !== 0){
 					$(mm[0]).focus().click();
 				}
+			}*/
+			/* Jump logical: jump to next input only if right */
+			if (checkInput($(this))) {
+				var nn = $(this).nextAll("input:not(.correct , .defalut , .lock)");
+				//fix bug: nn is not a jquery object but a DOM object
+				if( nn.length !== 0){
+					$(nn[0]).focus().click();
+				} else{
+					console.log("本题所有填空已完成");
+					setTimeout(nextQuestionInit,1000);
+				}
+			} else {
+				setTimeout(function(){
+					$(this).removeClass("incorrect");
+				},1000);
 			}
+			
 		}
 		function checkInput($n){
 			if ($n.val().toLowerCase() === current_right_answer.substr($n.index(),1) ){
-				$n.addClass("correct");
-				$n.attr("readonly","readonly");
+				$n.unbind("keyup",jumpNext).addClass("correct").attr("readonly","readonly");
 				current_user_right_num ++;
 				current_right_num ++ ;
 				addScore("user");
 				detail.time[$n.index()] = sec;
-				$n.unbind("keyup",jumpNext);
-				//console.log("取消绑定");
+				return true;
 			} else{
 				missEffect();
-				$n.addClass("incorrect").click(changeInput);
+				$n.addClass("incorrect").val("");
+				setTimeout(function(){
+					$n.removeClass("incorrect");
+				},900);
+				return false; 
 			}
-			nextQuestion();
 		}
 		function checkInputWithoutJump($n){
 			if ($n.val().toLowerCase() === current_right_answer.substr($n.index(),1) ){
@@ -174,12 +193,12 @@
 				$n.addClass("incorrect").click(changeInput);
 			}
 		}
-		function nextQuestion(){
+/*		function nextQuestion(){
 			// next question
 			if (current_right_num === current_right_need){
 				setTimeout(nextQuestionInit,1000);
 			}
-		}
+		}*/
 		//click "next question"
 		function nextClick(num){
 			robot_win_num += num;
@@ -204,11 +223,6 @@
 				judgeWinner();
 			}
 		}
-		function changeInput(){
-			if ($(this).hasClass("incorrect")){
-				$(this).removeClass("incorrect").val("");
-			}
-		}
 		function checkRobot(){
 			for (var i = 0; i < current_word_length; i++ ) {
 				if ( sec === current_word.AI[i]) {
@@ -224,7 +238,9 @@
 						current_robot_right_num ++;
 						current_right_num ++ ;
 						addScore("robot");
-						nextQuestion();
+						if (current_robot_right_num + current_user_right_num == current_right_need){
+							setTimeout(nextQuestionInit,1000);
+						}
 					}
 
 				}
@@ -376,7 +392,6 @@
 			}
 		}
 		function overtimeHandle(){
-			//console.log("超时了！");
 			for (var i = 0; i < current_word_length; i++ ) {
 				var $n = $("#input-area input:eq("+i+")");
 				if (!$n.hasClass("defalut") && !$n.hasClass("correct") && !$n.hasClass("lock") ){
@@ -384,24 +399,23 @@
 					$n.attr("readonly","readonly");
 					$n.val(current_right_answer.substr(i,1));
 					$n.blur();
-					nextQuestion();
 				}
 			}
 			setTimeout(nextQuestionInit,1000);
 		}
 		function addLeftScore(score){
-			var $score1 = $("<div class='leftScore'>+"+score+"</div>");
+			var $score1 = $("<div class='leftScore label label-info'>+"+score+"</div>");
 			$(".score-area").append($score1);
-			$score1.animate({left:"+=20%",fontSize:"+=22px"},400)
+			$score1.animate({left:"+=20%",fontSize:"+=18px"},400)
 				.animate({opacity:"0",left:"+=5%",top:"-=5%",fontSize:"-=10px"},100,function(){
 					$score1.remove();
 				});
 
 		}
 		function addRightScore(score){
-			var $score2 = $("<div class='rightScore'>+"+score+"</div>");
+			var $score2 = $("<div class='rightScore label label-info'>+"+score+"</div>");
 			$(".score-area").append($score2);
-			$score2.animate({left:"-=20%",fontSize:"+=22px"},400)
+			$score2.animate({left:"-=20%",fontSize:"+=18px"},400)
 				.animate({opacity:"1",left:"-=5%",top:"-=5%",fontSize:"-=10px"},100,function(){
 					$score2.remove();
 				});
@@ -414,11 +428,9 @@
 			$overtime.animate({opacity:"1",top:"-=2%"},800).animate({opacity:"0",top:"-=2%"},800,function(){
 				$overtime.remove();
 			});
-			//$overtime.fadeIn(3000);
-			//$overtime.fadeOut(2000);
 		}
 		function missEffect(){
-			console.log("missEffect");
+			//console.log("missEffect");
 			var $miss = $("<span class='miss label label-danger'>MISS</span>");
 			$(".header").after($miss);
 			$miss.animate({opacity:"1",top:"-=2%"},300).animate({opacity:"0",top:"-=2%"},300,function(){

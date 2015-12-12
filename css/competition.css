@@ -57,8 +57,9 @@
 .content>.header>.top img{
 	width: 80%;
 	height: 80%;
-	border-radius: 50%;
+	border-radius: 100%;
 	margin: 10px 10px;
+	border: 3px solid #10438A;
 }
 .content>.header>.top>.middle{
 	height: 50%;
@@ -131,10 +132,29 @@
 	border: none;
 }
 .content>.main>#input-area>input.incorrect{
-	background-color: #FA8072;
+	animation: colorChange 1s;
+}
+@keyframes colorChange
+{
+	0%  { background-color: none;}
+	50% { background-color: #D9534F;}
+	100% { background-color: none;}
+}
+@-moz-keyframes myfirst /* Firefox */
+{
+	0%  { background-color: none;}
+	50% { background-color: #D9534F;}
+	100% { background-color: none;}
+}
+
+@-webkit-keyframes myfirst /* Safari 和 Chrome */
+{
+	0%  { background-color: none;}
+	50% { background-color: #D9534F;}
+	100% { background-color: none;}
 }
 .content>.main>#input-area>input.correct{
-	background-color: #90EE90;
+	background-color: #3AC3F3;
 	border: none;
 }
 .content>.main>#input-area>input.lock{
@@ -189,8 +209,8 @@
 	left: 85%;
 }
 #again{
-	width: 70%;
-	margin-left: 15%;
+	width: 35%;
+	margin-left: 32.5%;
 }
 #win{
 	font-size: 1.8em;
